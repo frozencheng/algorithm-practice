@@ -1,9 +1,6 @@
 package com.fanchengxin.stack;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 逆波兰表达式 计算
@@ -21,10 +18,58 @@ public class PolandRotation {
         List<String> list2 = turnNotationExpr(expression2);
         int res2 = calc(list2);
         System.out.println(res2);
+
+        // 验证字符串中缀转换为list中缀
+        String str = "(40x50)-8+60+800/200"; // 预计结果2056
+        List<String> listExpr = strTurnList(str);
+        System.out.println(listExpr);// 预计结果===> [(, 40, x, 50, ), -, 8, +, 60, +, 800, /, 200]
+        List<String> list3 = turnNotationExpr(listExpr);
+        int res3 = calc(list3);
+        System.out.println(res3);
+    }
+
+    // 将一个字符串形式的中缀表达式转换成 list形式的中缀表达式
+    public  static List<String> strTurnList(String str){
+        List<String> list = new ArrayList<>();
+        // 对 字符串进行遍历
+        String tle;
+        String tln;
+        for (int i = 0; i < str.length(); i++) {
+            tle=String.valueOf(str.charAt(i));// 将遍历的字符 先转成字符串
+            // 如果是数字 对后一位也进行判断是否为数字 如果是就进行拼接,直到后一位不是为止
+            if(tle.matches("\\d")){
+                if(i==str.length()-1){
+                    list.add(tle);
+                }
+
+                for(int j = i+1;j<str.length();j++){
+                    tln=String.valueOf(str.charAt(j));
+                    if(tln.matches("\\d")){
+                        if(j==str.length()-1){
+                            tle+=tln;
+                            i=j;
+                            list.add(tle);
+
+                        }
+                        tle+=tln;
+                    }else{
+                        i=j-1;
+                        list.add(tle);
+                        break;
+                    }
+                }
+            }
+            // 如果不是数字就直接添加
+            else {
+                list.add(tle);
+            }
+        }
+
+        return list;
     }
     
 
-    // 将逆波兰表达式(String)处理成list
+    // 将逆波兰表达式(字符串)处理成list逆波兰表达式
     public static List<String> turnList(String expression) {
         List<String> list = new ArrayList<>();
         String[] split = expression.split(" ");
@@ -97,13 +142,19 @@ public class PolandRotation {
         }
     }
 
-    // 将中缀表达式转换为后缀表达式(逆波兰表达式)
+    // 重载turnNotationExpr 参数为string
     public static List<String> turnNotationExpr(String expression) {
+        String[] split = expression.split(" ");
+        return turnNotationExpr(Arrays.asList(split));
+    }
+
+    //  将中缀表达式转换为后缀表达式(逆波兰表达式) 参数为list
+    public static  List<String> turnNotationExpr(List<String> list){
         // 创建两个 栈 s1 s2(s2 可以使列表)
         Stack<String> s1 = new Stack<>();
         List<String> s2 = new ArrayList<>();
         // 遍历 表达式 遇到
-        String[] split = expression.split(" ");
+
 
         // 1 , 遇到数字 直接压入 s2
         /*
@@ -117,7 +168,7 @@ public class PolandRotation {
          * */
         // 表达式遍历完后 如果s1中海油剩余的数据 则将数据弹出并压入s2中
 
-        for (String elem : split) {
+        for (String elem : list) {
 
             if (elem.matches("\\d+")) { // 如果为数字
                 s2.add(elem);
