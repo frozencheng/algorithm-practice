@@ -52,11 +52,10 @@ public class PolandRotation {
                         }
                         tle += tln;
                     } else if (tln.matches("\\s")) { // 遇到空格就略过
-                        if(j==str.length()-1){
-                            i=j;
+                        if (j == str.length() - 1) {
+                            i = j;
                             list.add(tle);
                         }
-
                     } else {
 
                         i = j - 1;
