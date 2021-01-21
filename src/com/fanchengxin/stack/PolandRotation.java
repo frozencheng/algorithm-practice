@@ -20,7 +20,7 @@ public class PolandRotation {
         System.out.println(res2);
 
         // 验证字符串表达式转换为list表达式
-        String str = "(40x50)-8+60+800/200"; // 预计结果2056
+        String str = "( 4 0 x 5 0 )-8+ 60+800/200 "; // 预计结果2056
         List<String> listExpr = strTurnList(str);
         System.out.println(listExpr);// 预计结果===> [(, 40, x, 50, ), -, 8, +, 60, +, 800, /, 200]
         List<String> list3 = turnNotationExpr(listExpr);
@@ -51,16 +51,25 @@ public class PolandRotation {
                             list.add(tle);
                         }
                         tle += tln;
+                    } else if (tln.matches("\\s")) { // 遇到空格就略过
+                        if(j==str.length()-1){
+                            i=j;
+                            list.add(tle);
+                        }
+
                     } else {
+
                         i = j - 1;
                         list.add(tle);
+
                         break;
                     }
                 }
             }
-            // 如果不是数字就直接添加
+
+            // 如果不是数字且不为空格就直接添加
             else {
-                if (!tle.matches("\\s")) {// 对含有空格的默认不添加
+                if (!tle.matches("\\s")) {
                     list.add(tle);
                 }
             }
