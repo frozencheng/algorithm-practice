@@ -1,4 +1,4 @@
-package com.fanchengxin.stack;
+package com.fanchengxin.recursion;
 
 /**
  * 小球找路 递归回溯
