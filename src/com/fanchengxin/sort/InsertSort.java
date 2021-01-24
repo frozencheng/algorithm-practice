@@ -42,7 +42,10 @@ public class InsertSort {
                 array[insertIndex + 1] = array[insertIndex];
                 insertIndex--;
             }
-            array[insertIndex + 1] = insertVal;
+            // 优化 如果 while循环没有执行 那么就不需要执行 下面的赋值操作
+            if (insertIndex + 1 != i) {
+                array[insertIndex + 1] = insertVal;
+            }
             System.out.println("第" + i + "轮" + Arrays.toString(array));
         }
     }
